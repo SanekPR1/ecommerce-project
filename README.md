@@ -1,1 +1,1 @@
-# ecommerce-project
+This is my study project of Angular and how it works with Spring boot
