@@ -10,8 +10,7 @@ import { ProductService } from 'src/app/services/product.service';
 })
 export class ProductDetailsComponent implements OnInit {
 
-  product: Product;
-  isDataUploaded: boolean = false;
+  product: Product = new Product();
 
   constructor(private productService: ProductService,
     private route: ActivatedRoute) { }
@@ -24,7 +23,6 @@ export class ProductDetailsComponent implements OnInit {
     const productId = +this.route.snapshot.paramMap.get('id')!;
     this.productService.getProduct(productId).subscribe(
       data => {
-        this.isDataUploaded = true;
         this.product = data;
       }
     );
