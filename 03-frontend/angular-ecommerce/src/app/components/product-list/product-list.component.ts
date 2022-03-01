@@ -72,10 +72,13 @@ export class ProductListComponent implements OnInit {
         this.pageNumber = 1;
         this.setPreviousCategoryId(-1);
       }
-      this.productService.getProductList()
+      this.productService.getProductList(this.pageNumber - 1, this.pageSize)
         .subscribe(
           data => {
-            this.products = data;
+            this.products = data._embedded.products;
+            this.pageNumber = data.page.number + 1;
+            this.pageSize = data.page.size;
+            this.totalElements = data.page.totalElements;
           });
     }
   }
