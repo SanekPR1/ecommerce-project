@@ -14,6 +14,7 @@ export class ProductListComponent implements OnInit {
   currentCategoryName: string = 'All Categories';
   searchMode: boolean = false;
   previousCategoryId: number = -1;
+  previousKeyWord: string | null = null;
 
   pageNumber: number = 1;
   pageSize: number = 10;
@@ -46,9 +47,16 @@ export class ProductListComponent implements OnInit {
 
   private handleSearchProducts() {
     const keyword = this.route.snapshot.paramMap.get('keyword');
-    this.productService.searchProducts(keyword!).subscribe(
+    if (keyword != this.previousKeyWord) {
+      this.pageNumber = 1;
+      this.previousKeyWord = keyword;
+    }
+    this.productService.searchProducts(keyword!, this.pageNumber - 1, this.pageSize).subscribe(
       data => {
-        this.products = data;
+        this.products = data._embedded.products;
+        this.pageNumber = data.page.number + 1;
+        this.pageSize = data.page.size;
+        this.totalElements = data.page.totalElements;
       });
   }
 

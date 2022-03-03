@@ -24,19 +24,17 @@ export class ProductService {
       `&page=${pageNumber}&size=${pageSize}`);
   }
 
-  searchProducts(keyword: string): Observable<Product[]> {
-    return this.getProducts(this.baseUrl + `/search/findByNameContaining?name=${keyword}`);
+  searchProducts(keyword: string, pageNumber: number,
+    pageSize: number): Observable<GetResponse> {
+    let url = this.baseUrl + `/search/findByNameContaining?name=${keyword}`
+      + `&page=${pageNumber}&size=${pageSize}`;
+    console.log(url);
+
+    return this.httpClient.get<GetResponse>(url);
   }
 
   getProduct(productId: number): Observable<Product> {
     return this.httpClient.get<Product>(`${this.baseUrl}/${productId}`)
-  }
-
-  private getProducts(searchUrl: string): Observable<Product[]> {
-    return this.httpClient.get<GetResponse>(searchUrl)
-      .pipe(
-        map(response => response._embedded.products)
-      )
   }
 }
 
