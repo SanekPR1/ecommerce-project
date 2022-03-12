@@ -42,7 +42,6 @@ export class CartService {
 
   decrementQuantity(item: CartItem) {
     item.quantity--;
-    console.log(`Item quantity is ${item.quantity}`);
     if (item.quantity === 0) {
       this.remove(item);
     }
@@ -76,7 +75,6 @@ export class CartService {
   remove(item: CartItem) {
     const itemIndex = this.cartItems.findIndex(
       currentItem => currentItem.id === item.id);
-    console.log(`Item index ${itemIndex}`);
     if (itemIndex > -1) {
       this.cartItems.splice(itemIndex, 1)
       this.computeCartTotals();
