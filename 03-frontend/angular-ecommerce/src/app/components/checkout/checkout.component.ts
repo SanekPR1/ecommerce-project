@@ -20,7 +20,8 @@ export class CheckoutComponent implements OnInit {
   creditCardYears: number[] = [];
 
   countries: Country[] = [];
-  states: State[] = [];
+  shippingStates: State[] = [];
+  billingStates: State[] = [];
 
   constructor(private formBuilder: FormBuilder,
     private shopFormService: ShopFormService) { }
@@ -112,6 +113,26 @@ export class CheckoutComponent implements OnInit {
           this.creditCardMonths = data;
         }
       )
+  }
+
+  getStates(formName: string) {
+    const addressFormGroup = this.checkoutFormGroup.get(formName);
+    const countryCode = addressFormGroup!.value.country.code;
+
+    console.log(`${formName} country code ${countryCode}`);
+
+    this.shopFormService.getStates(countryCode)
+      .subscribe(
+        data => {
+          console.log(`Retrieved states: ${JSON.stringify(data)}`);
+          if (formName === 'shippingAddress') {
+            this.shippingStates = data;
+          } else {
+            this.billingStates = data;
+          }
+        }
+      )
+
   }
 
 }
